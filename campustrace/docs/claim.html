@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify & Claim Item</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<form class="form" id="claimForm">
+  <div class="form-header found">
+    <h2>Verify Item Ownership</h2>
+    <p>Answer accurately to verify you are the rightful owner.</p>
+  </div>
+
+  <div class="form-body">
+    <h3>Your Contact Details</h3>
+
+<label>Your Name *</label>
+<input id="claimerName" type="text" required>
+
+<label>Phone Number *</label>
+<input id="claimerPhone" type="text" required>
+
+<label>Email</label>
+<input id="claimerEmail" type="email">
+
+    <label>Primary Color *</label>
+    <input id="color" type="text" placeholder="e.g. Green, Blue, Black" required>
+
+    <label>Brand / Model</label>
+    <input id="brand" type="text" placeholder="e.g. Hydroflask, iPhone">
+
+    <label>Identifying Details *</label>
+    <textarea
+      id="identifiers"
+      placeholder="e.g. stickers, scratches, engravings"
+      required>
+    </textarea>
+
+    <label>Where did you lose this item? *</label>
+    <input id="location" type="text" placeholder="e.g. Library, Canteen" required>
+
+    <div class="actions">
+      <a href="browse.html" class="btn outline">Cancel</a>
+      <button class="btn blue" type="submit">Submit Verification</button>
+    </div>
+
+  </div>
+</form>
+
+<script src="js/script.js"></script>
+</body>
+</html>

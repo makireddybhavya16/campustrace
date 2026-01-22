@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Lost Item</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html">← Back to Dashboard</a>
+</header>
+
+<form class="form" id="lostForm">
+  <div class="form-header lost">
+    <h2>Report Lost Item</h2>
+    <p>Please provide accurate details to help recovery.</p>
+  </div>
+
+  <div class="form-body">
+    <label>Item Name</label>
+    <input type="text" required>
+
+    <label>Description</label>
+    <textarea required></textarea>
+
+    <div class="row">
+      <div>
+        <label>Location Last Seen</label>
+        <input type="text" required>
+      </div>
+      <div>
+        <label>Date Last Seen</label>
+        <input type="date" required>
+      </div>
+    </div>
+
+    <label>Primary Color</label>
+    <input type="text" required>
+
+    <label>Brand</label>
+    <input type="text">
+
+    <label>Identifying Details</label>
+    <textarea required></textarea>
+
+    <div class="actions">
+      <a href="index.html" class="btn outline">Cancel</a>
+      <button class="btn red" type="submit">Submit Report</button>
+    </div>
+  </div>
+</form>
+
+<script src="js/script.js"></script>
+</body>
+</html>

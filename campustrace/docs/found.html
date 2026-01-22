@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Report Found Item</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="index.html">← Back to Dashboard</a>
+</header>
+
+<form class="form" id="foundForm">
+  <div class="form-header found">
+    <h2>Report Found Item</h2>
+    <p>Please provide accurate details to help recovery.</p>
+  </div>
+
+  <div class="form-body">
+    <label>Item Name</label>
+    <input type="text" required>
+
+    <label>Description</label>
+    <textarea required></textarea>
+
+    <div class="row">
+      <div>
+        <label>Location Found</label>
+        <input type="text" required>
+      </div>
+      <div>
+        <label>Date Found</label>
+        <input type="date" required>
+      </div>
+    </div>
+
+    <label>Primary Color</label>
+    <input type="text" required>
+
+    <label>Brand</label>
+    <input type="text">
+
+    <label>Identifying Details</label>
+    <textarea required></textarea>
+    <h3>Finder Contact Details</h3>
+
+<label>Your Name</label>
+<input type="text" required>
+
+<label>Phone Number</label>
+<input type="text" required>
+
+<label>Email</label>
+<input type="email">
+
+    <div class="actions">
+      <a href="index.html" class="btn outline">Cancel</a>
+      <button class="btn green" type="submit">Submit Report</button>
+    </div>
+  </div>
+</form>
+
+<script src="js/script.js"></script>
+</body>
+</html>
