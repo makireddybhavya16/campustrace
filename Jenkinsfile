@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/Vidhya1101/campustracer.git'
+                git branch: 'main', url: 'https://github.com/makireddybhavya16/campustrace.git'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 3001:3001 --name campustracer campustracer'
+                bat 'docker run -d -p 3002:3002 --name campustracer campustracer'
             }
         }
 
