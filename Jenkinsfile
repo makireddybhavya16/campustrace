@@ -23,8 +23,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                bat 'docker run -d -p 3002:3002 --name campustracer campustracer'
-            }
+bat 'docker run -d -p 3005:3002 --name campustracer campustracer'            }
         }
 
         stage('Install Dependencies') {
