@@ -20,11 +20,15 @@ pipeline {
                 bat 'docker rm campustracer || exit 0'
             }
         }
-
-        stage('Run Container') {
-            steps {
-bat 'docker run -d -p 3005:3002 --name campustracer campustracer'            }
-        }
+stage('Run Container') {
+    steps {
+        bat '''
+        docker stop campustracer || exit 0
+        docker rm campustracer || exit 0
+        docker run -d -p 3005:3002 --name campustracer campustracer
+        '''
+    }
+}
 
         stage('Install Dependencies') {
             steps {
