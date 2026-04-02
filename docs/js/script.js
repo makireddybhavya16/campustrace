@@ -46,16 +46,16 @@ function renderItems(filter) {
       ${
         item.status === "claimed" && item.finderContact
           ? `<div class="contact">
-              <strong>Finder Contact</strong><br>
-              ${item.finderContact.name}<br>
-              ${item.finderContact.phone}<br>
-              ${item.finderContact.email || ""}
+              <strong>Finder Contact Details</strong><br>
+              Name: ${item.finderContact.name}<br>
+              Phone: ${item.finderContact.phone}<br>
+              ${item.finderContact.email ? `Email: ${item.finderContact.email}` : ""}
             </div>`
           : ""
       }
 
       ${
-        item.status === "unclaimed"
+        item.type === "found" && item.status === "unclaimed"
           ? `<a href="claim.html?id=${item.id}" class="claim-btn">Verify & Claim</a>`
           : ""
       }
@@ -72,73 +72,6 @@ document.querySelectorAll(".filter").forEach(btn => {
   }
 })
 
-function extractKeywords(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z\s]/g, "")
-    .split(" ")
-    .filter(w => w.length > 2)
-}
-
-function keywordOverlap(a, b) {
-  if (!a || !b) return false
-  const x = extractKeywords(a)
-  const y = extractKeywords(b)
-  return x.some(w => y.includes(w))
-}
-
-async function submitClaim(event) {
-  event.preventDefault()
-
-  const params = new URLSearchParams(window.location.search)
-  const itemId = params.get("id")
-
-  const res = await fetch(API)
-  const items = await res.json()
-  const foundItem = items.find(i => i.id == itemId)
-
-  if (!foundItem) {
-    alert("Item not found")
-    return
-  }
-
-  const userColor = document.getElementById("color").value
-  const userBrand = document.getElementById("brand").value
-  const userIdentifiers = document.getElementById("identifiers").value
-  const userLocation = document.getElementById("location").value
-
-  const claimerName = document.getElementById("claimerName").value
-  const claimerPhone = document.getElementById("claimerPhone").value
-  const claimerEmail = document.getElementById("claimerEmail").value
-
-  let score = 0
-
-  if (keywordOverlap(foundItem.color, userColor)) score += 2
-  if (keywordOverlap(foundItem.identifiers, userIdentifiers)) score += 2
-  if (keywordOverlap(foundItem.location, userLocation)) score += 1
-  if (keywordOverlap(foundItem.brand, userBrand)) score += 1
-
-  if (score >= 3) {
-    foundItem.status = "claimed"
-    foundItem.claimerContact = {
-      name: claimerName,
-      phone: claimerPhone,
-      email: claimerEmail
-    }
-
-    await fetch(`${API}/${itemId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(foundItem)
-    })
-
-    alert("Verification successful. Contact details unlocked.")
-    window.location.href = "browse.html"
-  } else {
-    alert("Verification failed. Details do not match.")
-  }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const lostForm = document.getElementById("lostForm")
@@ -148,68 +81,119 @@ document.addEventListener("DOMContentLoaded", () => {
   if (lostForm) {
     lostForm.addEventListener("submit", async e => {
       e.preventDefault()
-
-      const inputs = lostForm.querySelectorAll("input, textarea")
+      const f = e.target
 
       const item = {
         id: generateId(),
         type: "lost",
-        name: inputs[0].value,
-        description: inputs[1].value,
-        location: inputs[2].value,
-        date: inputs[3].value,
-        color: inputs[4].value,
-        brand: inputs[5].value,
-        identifiers: inputs[6].value,
+        name: f.querySelector("#name").value,
+        description: f.querySelector("#description").value,
+        location: f.querySelector("#location").value,
+        date: f.querySelector("#date").value,
+        color: f.querySelector("#color").value,
+        brand: f.querySelector("#brand").value,
+        identifiers: f.querySelector("#identifiers").value,
         status: "unclaimed"
       }
 
-      await fetch(API, {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(item)
       })
 
-      window.location.href = "browse.html"
+      if (res.ok) {
+        window.location.href = "browse.html"
+      } else {
+        alert("Lost item not registered")
+      }
     })
   }
 
   if (foundForm) {
     foundForm.addEventListener("submit", async e => {
       e.preventDefault()
+      const f = e.target
 
-      const inputs = foundForm.querySelectorAll("input, textarea")
+      const imageFile = f.querySelector("#itemImage").files[0]
+      let image = ""
+
+      if (imageFile) {
+        image = await readImage(imageFile)
+      }
 
       const item = {
         id: generateId(),
         type: "found",
-        name: inputs[0].value,
-        description: inputs[1].value,
-        location: inputs[2].value,
-        date: inputs[3].value,
-        color: inputs[4].value,
-        brand: inputs[5].value,
-        identifiers: inputs[6].value,
+        name: f.querySelector("#name").value,
+        description: f.querySelector("#description").value,
+        image: image,
+        location: f.querySelector("#location").value,
+        date: f.querySelector("#date").value,
+        color: f.querySelector("#color").value,
+        brand: f.querySelector("#brand").value,
+        identifiers: f.querySelector("#identifiers").value,
         finderContact: {
-          name: inputs[7].value,
-          phone: inputs[8].value,
-          email: inputs[9].value
+          name: f.querySelector("#finderName").value,
+          phone: f.querySelector("#finderPhone").value,
+          email: f.querySelector("#finderEmail").value
         },
         status: "unclaimed"
       }
 
-      await fetch(API, {
+      const res = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(item)
       })
 
-      window.location.href = "browse.html"
+      if (res.ok) {
+        window.location.href = "browse.html"
+      } else {
+        alert("Found item not registered")
+      }
     })
   }
 
   if (claimForm) {
-    claimForm.addEventListener("submit", submitClaim)
+    claimForm.addEventListener("submit", async e => {
+      e.preventDefault()
+
+      const params = new URLSearchParams(window.location.search)
+      const id = params.get("id")
+
+      const res = await fetch(API)
+      const items = await res.json()
+
+      let item
+
+      if (id) {
+        item = items.find(i => i.id == id)
+      } else {
+        item = [...items].reverse().find(i => i.type === "found" && i.status === "unclaimed")
+      }
+
+      if (!item) {
+        alert("Item not found")
+        return
+      }
+
+      item.status = "claimed"
+
+      const update = await fetch(`${API}/${item.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(item)
+      })
+
+      if (!update.ok) {
+        alert("Failed to claim item")
+        return
+      }
+
+      alert("Successfully claimed. Finder contact details unlocked.")
+      window.location.href = "browse.html"
+    })
   }
 
   loadItems()

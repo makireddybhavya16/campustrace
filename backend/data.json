@@ -1,0 +1,62 @@
+{
+  "items": [
+    {
+      "id": 1769023440693,
+      "type": "lost",
+      "name": "wallet",
+      "description": "it is black in colour and has sticker on it",
+      "location": "library",
+      "date": "2026-01-14",
+      "color": "black",
+      "brand": "dont know",
+      "identifiers": "looks thin and sticker at corner",
+      "status": "claimed"
+    },
+    {
+      "id": 1769023546354,
+      "type": "lost",
+      "name": "wallet",
+      "description": "it is black in colour and has sticker on it",
+      "location": "library",
+      "date": "2026-01-14",
+      "color": "black",
+      "brand": "lacoster",
+      "identifiers": "looks thin and sticker at corner",
+      "status": "claimed"
+    },
+    {
+      "id": 1769059092780,
+      "type": "found",
+      "name": "sam",
+      "description": "sam",
+      "location": "sam",
+      "date": "2026-01-07",
+      "color": "sam",
+      "brand": "sam",
+      "identifiers": "sam",
+      "status": "claimed"
+    },
+    {
+      "id": 1769059933217,
+      "type": "found",
+      "name": "wallet",
+      "description": "it looks black in colour, leather",
+      "location": "library",
+      "date": "2026-01-23",
+      "color": "black",
+      "brand": "gucci",
+      "identifiers": "it is wallet. a sticker at the bottom",
+      "finderContact": {
+        "name": "stacy",
+        "phone": "9492805335",
+        "email": "natur@gmail.com"
+      },
+      "status": "claimed",
+      "claimerContact": {
+        "name": "emily",
+        "phone": "9492879028",
+        "email": "sky@gmail.com"
+      }
+    }
+  ]
+}
